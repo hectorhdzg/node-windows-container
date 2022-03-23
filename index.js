@@ -1,39 +1,21 @@
-const http = require('http');
-const https = require('https');
+const express = require('express');
+const axios = require('axios').default;
 
-var server = http.createServer(function (req, res) {   //create web server
+const app = express();
 
-    console.log("Received request:" + req.url);
-
-    if (req.url == '/index.js') {
-        let options = {
-            host: "https://httpbin.org"
-        };
-        https.get(options, (response) => {
-            const result = JSON.stringify({ test: "test" });
-            response.on('data', (chunk) => { });
-            response.on('end', () => {
-                console.log(JSON.parse(result));
-            });
-        }).on("error", (error) => {
-            console.log("Error: " + error.message);
-        });
-        res.doestExist().test;
-        res.write("Hello World");
-        res.end();
-    }
-
-    else if (req.url == "/error.js") {
-        console.log(res.url);
-        res.doestExist().test;
-    }
-
-    else {
-        res.write("Something");
-        res.end();
-    }
+app.get('/index.js', (request, response) => {
+    console.log(request.url);
+    axios.get("https://httpbin.org/status/200").then(_val => {
+        const result = {
+            protocol: request.protocol,
+            headers: request.headers,
+            rawHeaders: request.rawHeaders,
+            envVar: process.env,
+        }
+        response.status(200).json(result);
+    });
 });
 
 const port = process.env.PORT || 5000;
-server.listen(port);
+app.listen(port);
 console.log("Server running at http://localhost:%d", port);

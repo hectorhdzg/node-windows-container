@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 
 ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 10.19.0
+ENV NODE_VERSION 14.14.0
 ENV ARCH x64
 
 
